@@ -4,9 +4,12 @@
     </div>
 
     <div class="mt-3 text-gray-500">
-        <div class="flex justify-between">
-            <div></div>
-            <div class="mr-2">
+        {{ $query }}
+        <div class="flex justify-between mt-2 mb-3">
+            <div>
+                <input wire:model="q" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm w-full" type="text" name="search" placeholder="Search" />
+            </div>
+            <div class="">
                 <input type="checkbox" class="leadin-tight" wire:model="active" /> Active Only?
             </div>
         </div>
