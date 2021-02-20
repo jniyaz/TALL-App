@@ -25,11 +25,13 @@
                    <th class="px-4 py-2">
                        <div class="flex items-center">Price</div>
                    </th>
+                   @if(!$active)
                    <th class="px-4 py-2">
                        <div class="flex items-center">Status</div>
                    </th>
+                   @endif
                    <th class="px-4 py-2">
-                       <div class="flex items-center">Actions</div>
+                       <div class="flex justify-center">Actions</div>
                    </th>
                 </tr>
            </thead>
@@ -39,7 +41,9 @@
                    <td class="border px-4 py-2">{{ $item->id }}</td>
                    <td class="border px-4 py-2">{{ $item->title }}</td>
                    <td class="border px-4 py-2">{{ number_format($item->price, 2) }}</td>
+                   @if(!$active)
                    <td class="border px-4 py-2">{{ $item->status ? 'Active' : 'Inactive' }}</td>
+                   @endif
                    <td class="border px-4 py-2">
                        <div class="flex justify-center items-center space-x-2">
                             <button class="shadow bg-blue-500 px-4 py-2 text-white hover:bg-blue-400">

@@ -13,6 +13,12 @@ class Items extends Component
     public $active;
     public $q;
 
+    // show with querystrings
+    protected $queryString = [
+        'active' => ['except' => false],
+        'q' => ['except' => '']
+    ];
+
     public function render()
     {
         $items = Item::where('user_id', auth()->user()->id)
