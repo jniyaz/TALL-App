@@ -10,13 +10,17 @@ class Items extends Component
 {
     use WithPagination;
 
-    public $active;
     public $q;
+    public $active;
+    public $sortBy = 'id';
+    public $sortAsc = true;
 
     // show with querystrings
     protected $queryString = [
         'active' => ['except' => false],
-        'q' => ['except' => '']
+        'q' => ['except' => ''],
+        'sortBy' => ['except' => 'id'],
+        'sortAsc' => ['except' => true]
     ];
 
     public function render()
@@ -31,7 +35,9 @@ class Items extends Component
                 ->when( $this->active, function($query){
                     // return $q->where('status', 1); // change to local scope
                     return $query->active();
-                } );
+                } )
+                ->orderBy($this->sortBy, $this->sortAsc ? 'ASC' : 'DESC');
+
         $query = $items->toSql();
         $items = $items->paginate(10);
         
@@ -46,5 +52,13 @@ class Items extends Component
     public function updatingQ()
     {
         $this->resetPage();
+    }
+
+    public function sortBy($filed)
+    {
+        if($filed == $this->sortBy) {
+            $this->sortAsc = !$this->sortAsc;
+        }
+        $this->sortBy = $filed;
     }
 }
