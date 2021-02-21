@@ -14,6 +14,10 @@ class Items extends Component
     public $active;
     public $sortBy = 'id';
     public $sortAsc = true;
+    public $confirmingItemDeletion = false;
+    public $confirmingItemAdd = false;
+    public $confirmingItemEdit = false;
+    public $item;
 
     // show with querystrings
     protected $queryString = [
@@ -21,6 +25,12 @@ class Items extends Component
         'q' => ['except' => ''],
         'sortBy' => ['except' => 'id'],
         'sortAsc' => ['except' => true]
+    ];
+
+    protected $rules = [
+        'item.title' => 'required|string|min:4',
+        'item.price' => 'required|numeric|between:1,100',
+        'item.status' => 'boolean'
     ];
 
     public function render()
@@ -38,10 +48,10 @@ class Items extends Component
                 } )
                 ->orderBy($this->sortBy, $this->sortAsc ? 'ASC' : 'DESC');
 
-        $query = $items->toSql();
+        // $query = $items->toSql();
         $items = $items->paginate(10);
         
-        return view('livewire.items', compact('items', 'query'));
+        return view('livewire.items', compact('items'));
     }
 
     public function updatingActive()
@@ -60,5 +70,45 @@ class Items extends Component
             $this->sortAsc = !$this->sortAsc;
         }
         $this->sortBy = $filed;
+    }
+
+    public function confirmingItemDeletion($id)
+    {
+        $this->confirmingItemDeletion = $id;
+    }
+
+    public function deleteItem(Item $item)
+    {
+        $item->delete();
+        $this->confirmingItemDeletion = false;
+    }
+
+    public function confirmingItemAdd()
+    {
+        $this->reset(['item']);
+        $this->confirmingItemAdd = true;
+    }
+
+    public function saveItem()
+    {
+        $this->validate();
+
+        if(isset($this->item->id)) {
+            $this->item->save();
+        } else {
+            auth()->user()->items()->create([
+                'title' => $this->item['title'],
+                'price' => $this->item['price'],
+                'status' => $this->item['status'] ?? 0,
+            ]);
+        }
+
+        $this->confirmingItemAdd = false;
+    }
+
+    public function confirmingItemEdit(Item $item)
+    {
+        $this->item = $item;
+        $this->confirmingItemAdd = true;
     }
 }

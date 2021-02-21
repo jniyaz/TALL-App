@@ -9,7 +9,7 @@ class Item extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'price', 'status'];
+    protected $fillable = ['title', 'description', 'price', 'status'];
 
     public function scopeActive($query)
     {

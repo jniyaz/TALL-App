@@ -63,6 +63,6 @@ class User extends Authenticatable
 
     public function items()
     {
-        return $thus->hasMany(\App\Models\Item::class);
+        return $this->hasMany(\App\Models\Item::class);
     }
 }
