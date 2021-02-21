@@ -80,6 +80,7 @@ class Items extends Component
     public function deleteItem(Item $item)
     {
         $item->delete();
+        session()->flash('message', 'Item deleted successfully');
         $this->confirmingItemDeletion = false;
     }
 
@@ -95,12 +96,14 @@ class Items extends Component
 
         if(isset($this->item->id)) {
             $this->item->save();
+            session()->flash('message', 'Item saved successfully');
         } else {
             auth()->user()->items()->create([
                 'title' => $this->item['title'],
                 'price' => $this->item['price'],
                 'status' => $this->item['status'] ?? 0,
             ]);
+            session()->flash('message', 'Item Added successfully');
         }
 
         $this->confirmingItemAdd = false;

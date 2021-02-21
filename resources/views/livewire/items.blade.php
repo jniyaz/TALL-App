@@ -1,5 +1,21 @@
 <div class="p-2 sm:px-20 bg-white border-b border-gray-200">
-    <div class="mt-8 mb-4 text-2xl flex justify-between">
+    {{-- Alerts  --}}
+    @if(session()->has('message'))
+        <div class="bg-blue-100 p-5 w-full rounded" x-data="{show: true}" x-show="show">
+            <div class="flex justify-between">
+                <div class="flex space-x-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="flex-none fill-current text-blue-500 h-4 w-4">
+                        <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.25 16.518l-4.5-4.319 1.396-1.435 3.078 2.937 6.105-6.218 1.421 1.409-7.5 7.626z" /></svg>
+                    <div class="flex-1 leading-tight text-sm text-blue-700 font-medium">{{ session('message') }}</div>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="flex-none fill-current text-blue-600 h-3 w-3" @click="show=false">
+                    <path d="M23.954 21.03l-9.184-9.095 9.092-9.174-2.832-2.807-9.09 9.179-9.176-9.088-2.81 2.81 9.186 9.105-9.095 9.184 2.81 2.81 9.112-9.192 9.18 9.1z" />
+                </svg>
+            </div>
+        </div>
+    @endif
+
+    <div class="mt-4 mb-4 text-2xl flex justify-between">
         <div>Items</div>
         <div>
             <x-jet-button wire:click="confirmingItemAdd()">{{ __('Add Item') }}</x-jet-button>
@@ -76,7 +92,7 @@
     </div>
     
     {{-- Item Deletion Model --}}
-    <x-jet-dialog-modal wire:model="confirmingItemDeletion">
+    <x-jet-confirmation-modal wire:model="confirmingItemDeletion">
         <x-slot name="title">
             {{ __('Delete Item') }}
         </x-slot>
@@ -94,7 +110,7 @@
                 {{ __('Delete') }}
             </x-jet-danger-button>
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-jet-confirmation-modal>
 
     {{-- Item Add Model --}}
     <x-jet-dialog-modal wire:model="confirmingItemAdd">
